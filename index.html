@@ -97,16 +97,14 @@
             font-size: 1.5rem;
         }
 
-        /* Hero Section */
+        /* Hero Section with Video Background - FIXED */
         .hero {
             height: 100vh;
-            background: linear-gradient(rgba(0, 0, 0, 0.8), rgba(0, 0, 0, 0.7)), url('https://images.unsplash.com/photo-1536240478700-b869070f9279?ixlib=rb-4.0.3&auto=format&fit=crop&w=1600&q=80');
-            background-size: cover;
-            background-position: center;
+            position: relative;
             display: flex;
             align-items: center;
             text-align: center;
-            padding-top: 80px;
+            overflow: hidden;
         }
 
         #hero-video {
@@ -135,6 +133,9 @@
         .hero-content {
             max-width: 800px;
             margin: 0 auto;
+            position: relative;
+            z-index: 1;
+            padding-top: 80px;
         }
 
         .hero h1 {
@@ -171,6 +172,62 @@
             box-shadow: 0 10px 20px rgba(255, 71, 87, 0.2);
         }
 
+        /* Fallback image if video doesn't load */
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(rgba(0, 0, 0, 0.8), rgba(0, 0, 0, 0.7)), 
+                        url('https://images.unsplash.com/photo-1536240478700-b869070f9279?ixlib=rb-4.0.3&auto=format&fit=crop&w=1600&q=80');
+            background-size: cover;
+            background-position: center;
+            z-index: -2;
+            display: none;
+        }
+
+        .video-fallback {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(rgba(0, 0, 0, 0.8), rgba(0, 0, 0, 0.7)), 
+                        url('https://images.unsplash.com/photo-1536240478700-b869070f9279?ixlib=rb-4.0.3&auto=format&fit=crop&w=1600&q=80');
+            background-size: cover;
+            background-position: center;
+            z-index: -2;
+            display: none;
+        }
+
+        /* Video Play Button */
+        .video-controls {
+            position: absolute;
+            bottom: 30px;
+            right: 30px;
+            z-index: 10;
+        }
+
+        .video-play-btn {
+            background-color: rgba(255, 255, 255, 0.2);
+            border: none;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            color: white;
+            font-size: 1.2rem;
+            cursor: pointer;
+            transition: var(--transition);
+            backdrop-filter: blur(5px);
+        }
+
+        .video-play-btn:hover {
+            background-color: var(--accent-color);
+            transform: scale(1.1);
+        }
+
         /* Sections Common */
         section {
             padding: 100px 0;
@@ -194,7 +251,7 @@
             margin: 0 auto;
         }
 
-        /* About Section */
+        /* About Section with Flex Layout */
         .about {
             background-color: var(--primary-color);
         }
@@ -243,15 +300,34 @@
             color: #ddd;
         }
 
-        /* Skills Section */
+        /* Skills Section - All Cards in One Line */
         .skills {
             background-color: var(--dark-color);
+            overflow: hidden;
         }
 
         .skills-container {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            display: flex;
             gap: 30px;
+            justify-content: center;
+            flex-wrap: nowrap;
+            overflow-x: auto;
+            padding: 20px 0;
+            scrollbar-width: thin;
+            scrollbar-color: var(--accent-color) transparent;
+        }
+
+        .skills-container::-webkit-scrollbar {
+            height: 8px;
+        }
+
+        .skills-container::-webkit-scrollbar-track {
+            background: transparent;
+        }
+
+        .skills-container::-webkit-scrollbar-thumb {
+            background-color: var(--accent-color);
+            border-radius: 10px;
         }
 
         .skill-card {
@@ -261,6 +337,8 @@
             text-align: center;
             transition: var(--transition);
             border: 1px solid rgba(30, 144, 255, 0.2);
+            min-width: 250px;
+            flex-shrink: 0;
         }
 
         .skill-card:hover {
@@ -284,124 +362,7 @@
             color: #bbb;
         }
 
-        /* Projects Section */
-        .projects {
-            background-color: var(--primary-color);
-        }
-
-        .projects-filter {
-            display: flex;
-            justify-content: center;
-            flex-wrap: wrap;
-            gap: 10px;
-            margin-bottom: 40px;
-        }
-
-        .filter-btn {
-            background-color: transparent;
-            color: var(--light-color);
-            border: 1px solid var(--accent-color);
-            padding: 8px 20px;
-            border-radius: 30px;
-            cursor: pointer;
-            transition: var(--transition);
-        }
-
-        .filter-btn.active, .filter-btn:hover {
-            background-color: var(--accent-color);
-        }
-
-        .project-gallery {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
-            gap: 30px;
-        }
-
-        .project-item {
-            border-radius: 10px;
-            overflow: hidden;
-            box-shadow: var(--shadow);
-            transition: var(--transition);
-            background-color: rgba(0, 0, 0, 0.3);
-        }
-
-        .project-item:hover {
-            transform: translateY(-10px);
-        }
-
-        .project-thumbnail {
-            position: relative;
-            height: 250px;
-            overflow: hidden;
-        }
-
-        .project-thumbnail img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            transition: var(--transition);
-        }
-
-        .project-item:hover .project-thumbnail img {
-            transform: scale(1.05);
-        }
-
-        .project-overlay {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background-color: rgba(255, 71, 87, 0.8);
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            opacity: 0;
-            transition: var(--transition);
-        }
-
-        .project-item:hover .project-overlay {
-            opacity: 1;
-        }
-
-        .play-btn {
-            color: white;
-            font-size: 3rem;
-            background: none;
-            border: none;
-            cursor: pointer;
-        }
-
-        .project-info {
-            padding: 20px;
-        }
-
-        .project-info h3 {
-            font-size: 1.3rem;
-            margin-bottom: 10px;
-            color: var(--light-color);
-        }
-
-        .project-info p {
-            color: #bbb;
-            margin-bottom: 15px;
-        }
-
-        .project-tags {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 8px;
-        }
-
-        .tag {
-            background-color: rgba(30, 144, 255, 0.2);
-            color: var(--accent-color);
-            padding: 4px 10px;
-            border-radius: 20px;
-            font-size: 0.9rem;
-        }
-
-        /* Video Modal */
+        /* Projects Carousel Section */
         .projects {
             background-color: var(--primary-color);
             position: relative;
@@ -724,6 +685,29 @@
             cursor: not-allowed;
         }
 
+        /* Form Status Messages */
+        .form-status {
+            margin-top: 15px;
+            padding: 10px;
+            border-radius: 5px;
+            text-align: center;
+            display: none;
+        }
+
+        .form-status.success {
+            background-color: rgba(76, 175, 80, 0.2);
+            color: #4CAF50;
+            border: 1px solid #4CAF50;
+            display: block;
+        }
+
+        .form-status.error {
+            background-color: rgba(255, 71, 87, 0.2);
+            color: #ff4757;
+            border: 1px solid #ff4757;
+            display: block;
+        }
+
         /* Footer */
         footer {
             background-color: var(--primary-color);
@@ -756,37 +740,20 @@
             border-top: 1px solid rgba(255, 255, 255, 0.1);
         }
 
-        /* Form Status Messages */
-        .form-status {
-            margin-top: 15px;
-            padding: 10px;
-            border-radius: 5px;
-            text-align: center;
-            display: none;
-        }
-
-        .form-status.success {
-            background-color: rgba(76, 175, 80, 0.2);
-            color: #4CAF50;
-            border: 1px solid #4CAF50;
-            display: block;
-        }
-
-        .form-status.error {
-            background-color: rgba(255, 71, 87, 0.2);
-            color: #ff4757;
-            border: 1px solid #ff4757;
-            display: block;
-        }
-
         /* Responsive Design */
         @media (max-width: 992px) {
-            .about-content {
+            .contact-container {
                 flex-direction: column;
             }
             
-            .contact-container {
-                flex-direction: column;
+            .skills-container {
+                flex-wrap: wrap;
+                justify-content: center;
+                overflow-x: visible;
+            }
+            
+            .skill-card {
+                min-width: 200px;
             }
         }
 
@@ -823,8 +790,29 @@
                 font-size: 2.5rem;
             }
             
-            .project-gallery {
-                grid-template-columns: 1fr;
+            .carousel-btn {
+                width: 40px;
+                height: 40px;
+                font-size: 1.2rem;
+            }
+            
+            .prev-btn {
+                left: 10px;
+            }
+            
+            .next-btn {
+                right: 10px;
+            }
+            
+            .video-controls {
+                bottom: 20px;
+                right: 20px;
+            }
+            
+            .video-play-btn {
+                width: 40px;
+                height: 40px;
+                font-size: 1rem;
             }
             
             section {
@@ -843,6 +831,21 @@
             
             .contact-form {
                 padding: 30px 20px;
+            }
+            
+            .about-img, .about-text {
+                min-width: 100%;
+            }
+            
+            .carousel-btn {
+                width: 35px;
+                height: 35px;
+                font-size: 1rem;
+            }
+            
+            .video-controls {
+                bottom: 15px;
+                right: 15px;
             }
         }
     </style>
@@ -865,8 +868,29 @@
         </div>
     </header>
 
-    <!-- Hero Section -->
+    <!-- Hero Section with FIXED Video Background -->
     <section class="hero" id="home">
+        <!-- Video Background with multiple sources for better compatibility -->
+        <video id="hero-video" autoplay muted loop playsinline preload="auto" poster="https://images.unsplash.com/photo-1536240478700-b869070f9279?ixlib=rb-4.0.3&auto=format&fit=crop&w=1600&q=80">
+            <!-- Multiple video sources for cross-browser compatibility -->
+            <source src="https://assets.mixkit.co/videos/preview/mixkit-a-film-editor-working-with-a-timeline-41537-large.mp4" type="video/mp4">
+            <source src="https://player.vimeo.com/external/371433846.sd.mp4?s=2e4a8a013e8f2c5c9c3f4c6a7d6c5e4a&profile_id=164&oauth2_token_id=57447761" type="video/mp4">
+            Your browser does not support HTML5 video.
+        </video>
+        
+        <!-- Fallback background image (shown if video fails) -->
+        <div class="video-fallback" id="video-fallback"></div>
+        
+        <!-- Video overlay for text readability -->
+        <div class="video-overlay"></div>
+        
+        <!-- Video controls -->
+        <div class="video-controls">
+            <button class="video-play-btn" id="video-play-btn">
+                <i class="fas fa-play"></i>
+            </button>
+        </div>
+        
         <div class="container">
             <div class="hero-content">
                 <h1>Joanes Odanga | Video Editor</h1>
@@ -888,18 +912,21 @@
                     <!-- REPLACE THE IMAGE SRC BELOW WITH YOUR PHOTO URL -->
                     <img src="joanes.jpg" alt="Joanes Odanga">
                     <p style="text-align: center; margin-top: 10px; font-style: italic; color: #aaa;">
+                        <!-- Remove this text when you add your photo -->
+                       
                     </p>
                 </div>
                 <div class="about-text">
                     <h3>Bringing Stories to Life Through Video</h3>
                     <p>I'm Joanes Odanga, a passionate video editor dedicated to the art of visual storytelling. My journey began with a fascination for how editing can transform raw footage into emotional narratives that resonate with viewers.</p>
                     <p>With expertise in cutting-edge editing software and a keen eye for detail, I collaborate with clients to bring their visions to life. Whether it's a documentary, commercial, or corporate video, I focus on creating seamless edits that enhance the story and engage the audience.</p>
+                    
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- Skills Section -->
+    <!-- Skills Section - All Cards in One Line -->
     <section class="skills" id="skills">
         <div class="container">
             <div class="section-title">
@@ -933,7 +960,21 @@
                         <i class="fas fa-motion"></i>
                     </div>
                     <h3>Motion Graphics</h3>
-                    <p>Creating dynamic animations and visual effects to video projects.</p>
+                    <p>Creating dynamic animations and visual Effects to video projects.</p>
+                </div>
+                <div class="skill-card">
+                    <div class="skill-icon">
+                        <i class="fas fa-camera"></i>
+                    </div>
+                    <h3>Cinematography</h3>
+                    <p>Understanding of camera techniques, lighting, and composition to enhance visual storytelling from the ground up.</p>
+                </div>
+                <div class="skill-card">
+                    <div class="skill-icon">
+                        <i class="fas fa-video"></i>
+                    </div>
+                    <h3>Visual Effects</h3>
+                    <p>Adding VFX elements to enhance scenes and create impossible visuals that serve the narrative.</p>
                 </div>
             </div>
         </div>
@@ -1051,6 +1092,8 @@
     <footer>
         <div class="container">
             <div class="social-links">
+                <a href="#"><i class="fab fa-vimeo-v"></i></a>
+                <a href="#"><i class="fab fa-youtube"></i></a>
                 <a href="#"><i class="fab fa-linkedin-in"></i></a>
                 <a href="#"><i class="fab fa-instagram"></i></a>
             </div>
@@ -1078,42 +1121,118 @@
             });
         });
         
+        // FIXED VIDEO BACKGROUND FUNCTIONALITY
+        const heroVideo = document.getElementById('hero-video');
+        const videoPlayBtn = document.getElementById('video-play-btn');
+        const videoFallback = document.getElementById('video-fallback');
+        
+        // Check if video can play and handle issues
+        function checkVideoPlayback() {
+            // Try to play the video
+            const playPromise = heroVideo.play();
+            
+            if (playPromise !== undefined) {
+                playPromise.then(() => {
+                    // Video is playing successfully
+                    console.log('Video is playing');
+                    videoPlayBtn.innerHTML = '<i class="fas fa-pause"></i>';
+                    videoFallback.style.display = 'none';
+                }).catch(error => {
+                    // Video cannot autoplay, show fallback
+                    console.log('Video autoplay blocked:', error);
+                    videoFallback.style.display = 'block';
+                    videoPlayBtn.innerHTML = '<i class="fas fa-play"></i>';
+                    
+                    // Show message to user
+                    videoPlayBtn.title = "Click to play video (autoplay was blocked)";
+                });
+            }
+        }
+        
+        // Toggle video play/pause
+        function toggleVideoPlayback() {
+            if (heroVideo.paused) {
+                heroVideo.play();
+                videoPlayBtn.innerHTML = '<i class="fas fa-pause"></i>';
+                videoFallback.style.display = 'none';
+            } else {
+                heroVideo.pause();
+                videoPlayBtn.innerHTML = '<i class="fas fa-play"></i>';
+            }
+        }
+        
+        // Check video metadata is loaded
+        heroVideo.addEventListener('loadeddata', () => {
+            console.log('Video metadata loaded');
+            checkVideoPlayback();
+        });
+        
+        // Handle video errors
+        heroVideo.addEventListener('error', (e) => {
+            console.error('Video error:', e);
+            videoFallback.style.display = 'block';
+            videoPlayBtn.style.display = 'none'; // Hide play button if video fails
+        });
+        
+        // Video ended (for looping)
+        heroVideo.addEventListener('ended', () => {
+            heroVideo.currentTime = 0;
+            heroVideo.play();
+        });
+        
+        // Play button click event
+        videoPlayBtn.addEventListener('click', toggleVideoPlayback);
+        
+        // Initial check
+        document.addEventListener('DOMContentLoaded', () => {
+            setTimeout(checkVideoPlayback, 1000); // Check after 1 second
+        });
+        
         // Project Data - CUSTOMIZE THIS WITH YOUR ACTUAL PROJECTS
         const projects = [
             {
+                id: 1,
+                title: "Real Estate Listing",
+                category: "documentary",
+                description: "A 30-minute documentary following a team of researchers in the Amazon rainforest.",
+                thumbnail: "https://images.unsplash.com/photo-1536240478700-b869070f9279?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
+                videoUrl: "https://www.facebook.com/reel/1366510718451691/",
+                tags: ["Documentary", "Color Grading", "Sound Design"]
+            },
+            {
                 id: 2,
-                title: "First Person View",
+                title: "Tech Startup Product Launch",
                 category: "commercial",
-                description: "A product launch video for a first persons view new smartwatch.",
+                description: "A product launch video for a cutting-edge tech startup",
                 thumbnail: "https://images.unsplash.com/photo-1558618666-fcd25c85cd64?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
-                videoUrl: src="video/FPV.mp4",
+                videoUrl: "video/04.mp4",
                 tags: ["Commercial", "Motion Graphics", "Product Video"]
             },
             {
                 id: 3,
-                title: "Corporate Annual Events",
+                title: "Corporate Annual Event",
                 category: "corporate",
-                description: "Annual End year video for a Fortune 500 company's stakeholders.",
+                description: "An animated annual report video for a Fortune 500 company's stakeholders.",
                 thumbnail: "https://images.unsplash.com/photo-1551288049-bebda4e38f71?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
-                videoUrl: src="video/1.mp4",
+                videoUrl: "video/1.mp4",
                 tags: ["Corporate", "Animation", "Infographic"]
             },
             {
                 id: 4,
-                title: "Music Festival",
+                title: "First Person View",
                 category: "documentary",
-                description: "A high-energy video capturing the spirit of music festival.",
+                description: "Drone footage videos",
                 thumbnail: "https://images.unsplash.com/photo-1470225620780-dba8ba36b745?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
-                videoUrl: src="video/04.mp4",
+                videoUrl: "video/FPV.mp4",
                 tags: ["Event", "Music", "Fast-paced Editing"]
             },
             {
                 id: 5,
-                title: "Brand Campaign",
+                title: "Eco-Friendly Brand Campaign",
                 category: "commercial",
-                description: "A sustainability-focused brand campaign for an eco-conscious Furnitures.",
+                description: "A sustainability-focused brand campaign for an eco-conscious Interior design",
                 thumbnail: "https://images.unsplash.com/photo-1441986300917-64674bd600d8?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
-                videoUrl: src="video/Square.mp4",
+                videoUrl: "video/Square.mp4",
                 tags: ["Brand Video", "Environmental", "Storytelling"]
             },
             {
@@ -1122,48 +1241,64 @@
                 category: "corporate",
                 description: "A series of training videos for a multinational corporation's onboarding program.",
                 thumbnail: "https://images.unsplash.com/photo-1552664730-d307ca884978?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
-                videoUrl: src="video/thr.mp4",
+                videoUrl: "video/thr.mp4",
                 tags: ["Training", "Corporate", "Educational"]
             }
         ];
         
-        // Render Projects
-        const projectGallery = document.getElementById('project-gallery');
+        // Carousel Variables
+        let currentSlide = 0;
+        const carouselTrack = document.getElementById('carousel-track');
+        const carouselDots = document.getElementById('carousel-dots');
+        const prevBtn = document.getElementById('prev-btn');
+        const nextBtn = document.getElementById('next-btn');
         
-        function renderProjects(filter = 'all') {
-            projectGallery.innerHTML = '';
+        // Initialize Carousel
+        function initCarousel() {
+            // Clear any existing content
+            carouselTrack.innerHTML = '';
+            carouselDots.innerHTML = '';
             
-            const filteredProjects = filter === 'all' 
-                ? projects 
-                : projects.filter(project => project.category === filter);
-            
-            filteredProjects.forEach(project => {
-                const projectItem = document.createElement('div');
-                projectItem.className = 'project-item';
-                projectItem.setAttribute('data-category', project.category);
+            // Create slides
+            projects.forEach((project, index) => {
+                // Create slide element
+                const slide = document.createElement('div');
+                slide.className = 'carousel-slide';
                 
-                projectItem.innerHTML = `
-                    <div class="project-thumbnail">
-                        <img src="${project.thumbnail}" alt="${project.title}">
-                        <div class="project-overlay">
-                            <button class="play-btn" data-video="${project.videoUrl}">
-                                <i class="fas fa-play"></i>
-                            </button>
+                slide.innerHTML = `
+                    <div class="project-item">
+                        <div class="project-thumbnail">
+                            <img src="${project.thumbnail}" alt="${project.title}">
+                            <div class="project-overlay">
+                                <button class="play-btn" data-video="${project.videoUrl}">
+                                    <i class="fas fa-play"></i>
+                                </button>
+                            </div>
                         </div>
-                    </div>
-                    <div class="project-info">
-                        <h3>${project.title}</h3>
-                        <p>${project.description}</p>
-                        <div class="project-tags">
-                            ${project.tags.map(tag => `<span class="tag">${tag}</span>`).join('')}
+                        <div class="project-info">
+                            <h3>${project.title}</h3>
+                            <p>${project.description}</p>
+                            <div class="project-tags">
+                                ${project.tags.map(tag => `<span class="tag">${tag}</span>`).join('')}
+                            </div>
                         </div>
                     </div>
                 `;
                 
-                projectGallery.appendChild(projectItem);
+                carouselTrack.appendChild(slide);
+                
+                // Create dot for this slide
+                const dot = document.createElement('button');
+                dot.className = `dot ${index === 0 ? 'active' : ''}`;
+                dot.setAttribute('data-slide', index);
+                dot.addEventListener('click', () => goToSlide(index));
+                carouselDots.appendChild(dot);
             });
             
-            // Add event listeners to play buttons
+            // Update carousel display
+            updateCarousel();
+            
+            // Add event listeners for play buttons
             document.querySelectorAll('.play-btn').forEach(btn => {
                 btn.addEventListener('click', () => {
                     openVideoModal(btn.getAttribute('data-video'));
@@ -1171,21 +1306,45 @@
             });
         }
         
-        // Filter Projects
-        const filterBtns = document.querySelectorAll('.filter-btn');
-        
-        filterBtns.forEach(btn => {
-            btn.addEventListener('click', () => {
-                // Remove active class from all buttons
-                filterBtns.forEach(b => b.classList.remove('active'));
-                // Add active class to clicked button
-                btn.classList.add('active');
-                
-                // Filter projects
-                const filter = btn.getAttribute('data-filter');
-                renderProjects(filter);
+        // Update Carousel Position
+        function updateCarousel() {
+            const slideWidth = carouselTrack.clientWidth;
+            carouselTrack.style.transform = `translateX(-${currentSlide * slideWidth}px)`;
+            
+            // Update active dot
+            document.querySelectorAll('.dot').forEach((dot, index) => {
+                dot.classList.toggle('active', index === currentSlide);
             });
-        });
+        }
+        
+        // Go to Specific Slide
+        function goToSlide(slideIndex) {
+            currentSlide = slideIndex;
+            if (currentSlide < 0) currentSlide = projects.length - 1;
+            if (currentSlide >= projects.length) currentSlide = 0;
+            updateCarousel();
+        }
+        
+        // Next Slide
+        function nextSlide() {
+            goToSlide(currentSlide + 1);
+        }
+        
+        // Previous Slide
+        function prevSlide() {
+            goToSlide(currentSlide - 1);
+        }
+        
+        // Auto Slide (Optional)
+        let autoSlideInterval;
+        
+        function startAutoSlide() {
+            autoSlideInterval = setInterval(nextSlide, 5000); // Change slide every 5 seconds
+        }
+        
+        function stopAutoSlide() {
+            clearInterval(autoSlideInterval);
+        }
         
         // Video Modal
         const videoModal = document.getElementById('video-modal');
@@ -1196,12 +1355,14 @@
             videoFrame.src = videoUrl;
             videoModal.classList.add('active');
             document.body.style.overflow = 'hidden';
+            stopAutoSlide(); // Pause auto-slide when modal is open
         }
         
         function closeVideoModal() {
             videoModal.classList.remove('active');
             videoFrame.src = '';
             document.body.style.overflow = 'auto';
+            startAutoSlide(); // Resume auto-slide
         }
         
         closeModal.addEventListener('click', closeVideoModal);
@@ -1282,9 +1443,30 @@
             }
         });
         
-        // Initialize projects on page load
+        // Initialize everything on page load
         document.addEventListener('DOMContentLoaded', () => {
-            renderProjects();
+            initCarousel();
+            
+            // Add event listeners for carousel buttons
+            prevBtn.addEventListener('click', prevSlide);
+            nextBtn.addEventListener('click', nextSlide);
+            
+            // Start auto slide
+            startAutoSlide();
+            
+            // Pause auto-slide on hover
+            const carouselContainer = document.querySelector('.carousel-container');
+            carouselContainer.addEventListener('mouseenter', stopAutoSlide);
+            carouselContainer.addEventListener('mouseleave', startAutoSlide);
+            
+            // Keyboard navigation for carousel
+            document.addEventListener('keydown', (e) => {
+                if (e.key === 'ArrowLeft') prevSlide();
+                if (e.key === 'ArrowRight') nextSlide();
+            });
+            
+            // Update carousel on window resize
+            window.addEventListener('resize', updateCarousel);
         });
         
         // Smooth scrolling for navigation links
